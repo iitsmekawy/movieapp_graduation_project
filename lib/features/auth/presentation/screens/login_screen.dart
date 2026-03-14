@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final result = await _authService.signInWithGoogle();
       if (result == null) {
         if (mounted) setState(() => _isLoading = false);
-        return; // User cancelled — do nothing
+        return;
       }
       UserService().loadFromFirestore().catchError((_) {});
 
@@ -139,16 +139,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-
                 AuthTextField(
                   controller: _emailController,
                   hintText: l10n.email,
                   prefixIcon: Icons.email,
                   keyboardType: TextInputType.emailAddress,
                 ),
-
                 const SizedBox(height: 20),
-
                 AuthTextField(
                   controller: _passwordController,
                   hintText: l10n.password,
@@ -166,13 +163,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                 ),
-
                 const SizedBox(height: 12),
-
                 Align(
-                  alignment: isArabic
-                      ? Alignment.centerLeft
-                      : Alignment.centerRight,
+                  alignment:
+                      isArabic ? Alignment.centerLeft : Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -192,9 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
                 ElevatedButton(
                   onPressed: _isLoading ? null : _login,
                   style: ElevatedButton.styleFrom(
@@ -222,15 +214,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                 ),
-
                 const SizedBox(height: 20),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "${l10n.dontHaveAccount} ",
-                      style: const TextStyle(color: AppColors.white, fontSize: 14),
+                      style:
+                          const TextStyle(color: AppColors.white, fontSize: 14),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -252,9 +243,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 24),
-
                 Row(
                   children: [
                     const Expanded(
@@ -282,17 +271,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 24),
-
                 SocialAuthButton(
                   label: l10n.loginWithGoogle,
                   onPressed: _loginWithGoogle,
                   isLoading: _isLoading,
                 ),
-
                 const SizedBox(height: 32),
-
                 Center(
                   child: SizedBox(
                     width: 100,
@@ -331,7 +316,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
-                                  MyApp.of(context)?.setLocale(const Locale('en'));
+                                  MyApp.of(context)
+                                      ?.setLocale(const Locale('en'));
                                 },
                                 child: SizedBox(
                                   width: 44,
@@ -349,7 +335,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
-                                  MyApp.of(context)?.setLocale(const Locale('ar'));
+                                  MyApp.of(context)
+                                      ?.setLocale(const Locale('ar'));
                                 },
                                 child: SizedBox(
                                   width: 44,

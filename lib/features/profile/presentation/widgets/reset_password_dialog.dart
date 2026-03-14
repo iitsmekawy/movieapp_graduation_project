@@ -14,7 +14,8 @@ class ResetPasswordDialog extends StatefulWidget {
 class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
   final TextEditingController _oldPasswordController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool _isLoading = false;
 
   @override
@@ -53,8 +54,10 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
       await user.reauthenticateWithCredential(cred);
       await user.updatePassword(newPassword);
 
-      // Timestamp password change in Firestore
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update({
         'passwordLastChanged': FieldValue.serverTimestamp(),
         'lastModified': FieldValue.serverTimestamp(),
       });
@@ -115,7 +118,8 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
         ),
         ElevatedButton(
           onPressed: _isLoading ? null : _updatePassword,
-          style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryYellow),
+          style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryYellow),
           child: _isLoading
               ? const SizedBox(
                   width: 20,

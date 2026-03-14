@@ -20,7 +20,8 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final UserService _userService = UserService();
   final ApiService _apiService = ApiService();
@@ -37,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     _loadHistory();
     _loadWatchlist();
     _userService.addListener(_onUserUpdate);
-    // Load name, phone, avatar from Firestore
+
     _userService.loadFromFirestore();
   }
 
@@ -56,14 +57,17 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     try {
       final historyIds = await _userService.getHistory();
       if (historyIds.isEmpty) {
-        if (mounted) setState(() { _historyMovies = []; _isLoadingHistory = false; });
+        if (mounted)
+          setState(() {
+            _historyMovies = [];
+            _isLoadingHistory = false;
+          });
         return;
       }
-      
+
       final movies = await Future.wait(
-        historyIds.map((id) => _apiService.fetchMovieDetails(id))
-      );
-      
+          historyIds.map((id) => _apiService.fetchMovieDetails(id)));
+
       if (mounted) {
         setState(() {
           _historyMovies = movies.toList();
@@ -79,14 +83,17 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     try {
       final watchlistIds = await _userService.getWatchlist();
       if (watchlistIds.isEmpty) {
-        if (mounted) setState(() { _watchlistMovies = []; _isLoadingWatchlist = false; });
+        if (mounted)
+          setState(() {
+            _watchlistMovies = [];
+            _isLoadingWatchlist = false;
+          });
         return;
       }
-      
+
       final movies = await Future.wait(
-        watchlistIds.map((id) => _apiService.fetchMovieDetails(id))
-      );
-      
+          watchlistIds.map((id) => _apiService.fetchMovieDetails(id)));
+
       if (mounted) {
         setState(() {
           _watchlistMovies = movies.toList();
@@ -174,8 +181,12 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _StatItem(count: _watchlistMovies.length.toString(), label: AppLocalizations.of(context)!.wishList),
-                    _StatItem(count: _historyMovies.length.toString(), label: AppLocalizations.of(context)!.history),
+                    _StatItem(
+                        count: _watchlistMovies.length.toString(),
+                        label: AppLocalizations.of(context)!.wishList),
+                    _StatItem(
+                        count: _historyMovies.length.toString(),
+                        label: AppLocalizations.of(context)!.history),
                   ],
                 ),
               ],
@@ -198,17 +209,22 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const EditProfileScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const EditProfileScreen()),
                 );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryYellow,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
                 padding: const EdgeInsets.symmetric(vertical: 15),
               ),
               child: Text(
                 l10n.editProfile,
-                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
               ),
             ),
           ),
@@ -220,20 +236,24 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 await _authService.signOut();
                 if (mounted) {
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const LoginScreen()),
                     (route) => false,
                   );
                 }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.error,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
                 padding: const EdgeInsets.symmetric(vertical: 15),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(l10n.exit, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  Text(l10n.exit,
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
                   const SizedBox(width: 5),
                   const Icon(Icons.logout, color: Colors.white, size: 20),
                 ],
@@ -268,7 +288,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
             children: [
               Row(
                 children: [
-                  const Icon(Icons.language_rounded, color: AppColors.primaryYellow, size: 22),
+                  const Icon(Icons.language_rounded,
+                      color: AppColors.primaryYellow, size: 22),
                   const SizedBox(width: 10),
                   Text(
                     isArabic ? 'اللغة / Language' : 'Language / اللغة',
@@ -284,7 +305,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 duration: const Duration(milliseconds: 300),
                 child: Container(
                   key: ValueKey(isArabic),
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                   decoration: BoxDecoration(
                     color: AppColors.primaryYellow,
                     borderRadius: BorderRadius.circular(8),
@@ -345,7 +367,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
 
   Widget _buildWatchListGrid() {
     if (_isLoadingWatchlist) {
-      return const Center(child: CircularProgressIndicator(color: AppColors.primaryYellow));
+      return const Center(
+          child: CircularProgressIndicator(color: AppColors.primaryYellow));
     }
     if (_watchlistMovies.isEmpty) {
       return _buildWatchListEmpty();
@@ -370,7 +393,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 builder: (context) => MovieDetailsScreen(movieId: movie.id),
               ),
             );
-            // Refresh in case it was modified
+
             _loadWatchlist();
             _loadHistory();
           },
@@ -383,7 +406,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   fit: BoxFit.cover,
                   width: double.infinity,
                   height: double.infinity,
-                  errorWidget: (context, url, error) => Container(color: Colors.grey[900]),
+                  errorWidget: (context, url, error) =>
+                      Container(color: Colors.grey[900]),
                 ),
                 Positioned(
                   top: 5,
@@ -403,7 +427,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
 
   Widget _buildHistoryGrid() {
     if (_isLoadingHistory) {
-      return const Center(child: CircularProgressIndicator(color: AppColors.primaryYellow));
+      return const Center(
+          child: CircularProgressIndicator(color: AppColors.primaryYellow));
     }
     if (_historyMovies.isEmpty) {
       return const Center(
@@ -445,7 +470,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   fit: BoxFit.cover,
                   width: double.infinity,
                   height: double.infinity,
-                  errorWidget: (context, url, error) => Container(color: Colors.grey[900]),
+                  errorWidget: (context, url, error) =>
+                      Container(color: Colors.grey[900]),
                 ),
                 Positioned(
                   top: 5,
@@ -476,7 +502,8 @@ class _StatItem extends StatelessWidget {
       children: [
         Text(
           count,
-          style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 5),
         Text(
@@ -500,7 +527,8 @@ class _StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => 72;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       color: AppColors.background,
       height: 72,

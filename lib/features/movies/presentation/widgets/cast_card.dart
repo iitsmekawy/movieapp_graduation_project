@@ -27,8 +27,11 @@ class CastCard extends StatelessWidget {
                     width: 60,
                     height: 60,
                     fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(color: Colors.grey[900]),
-                    errorWidget: (context, url, error) => Container(color: Colors.grey, child: const Icon(Icons.person, color: Colors.white54)),
+                    placeholder: (context, url) =>
+                        Container(color: Colors.grey[900]),
+                    errorWidget: (context, url, error) => Container(
+                        color: Colors.grey,
+                        child: const Icon(Icons.person, color: Colors.white54)),
                   )
                 : Container(
                     width: 60,
@@ -44,7 +47,10 @@ class CastCard extends StatelessWidget {
               children: [
                 Text(
                   "${AppLocalizations.of(context)!.name} : ${cast.name}",
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
                 ),
                 const SizedBox(height: 5),
                 Text(

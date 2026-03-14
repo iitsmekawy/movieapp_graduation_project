@@ -67,32 +67,37 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               _buildPage(
                 index: 0,
                 title: 'Find Your Next\nFavorite Movie Here',
-                description: 'Get access to a huge library of movies to suit all tastes. You will surely like it.',
+                description:
+                    'Get access to a huge library of movies to suit all tastes. You will surely like it.',
                 imageAsset: 'assets/images/Movies Posters Group.png',
                 hasCard: false,
               ),
               _buildPage(
                 index: 1,
                 title: 'Discover Movies',
-                description: 'Explore a vast collection of movies in all qualities and genres. Find your next favorite film with ease.',
+                description:
+                    'Explore a vast collection of movies in all qualities and genres. Find your next favorite film with ease.',
                 imageAsset: 'assets/images/2.png',
               ),
               _buildPage(
                 index: 2,
                 title: 'Explore All Genres',
-                description: 'Discover movies from every genre, in all available qualities. Find something new and exciting to watch every day.',
+                description:
+                    'Discover movies from every genre, in all available qualities. Find something new and exciting to watch every day.',
                 imageAsset: 'assets/images/3.png',
               ),
               _buildPage(
                 index: 3,
                 title: 'Create Watchlists',
-                description: 'Save movies to your watchlist to keep track of what you want to watch next. Enjoy films in various qualities and genres.',
+                description:
+                    'Save movies to your watchlist to keep track of what you want to watch next. Enjoy films in various qualities and genres.',
                 imageAsset: 'assets/images/4.png',
               ),
               _buildPage(
                 index: 4,
                 title: 'Rate, Review, and Learn',
-                description: 'Share your thoughts on the movies you\'ve watched. Dive deep into film details and help others discover great movies with your reviews.',
+                description:
+                    'Share your thoughts on the movies you\'ve watched. Dive deep into film details and help others discover great movies with your reviews.',
                 imageAsset: 'assets/images/5.png',
               ),
               _buildPage(
@@ -125,14 +130,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             child: Image.asset(
               imageAsset,
               fit: BoxFit.cover,
-              color: hasCard 
-                  ? const Color(0xFF083236).withValues(alpha: 0.35) 
+              color: hasCard
+                  ? const Color(0xFF083236).withValues(alpha: 0.35)
                   : Colors.black.withValues(alpha: 0.2),
               colorBlendMode: hasCard ? BlendMode.multiply : BlendMode.darken,
             ),
           ),
         ),
-        // Gradient overlay
         Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -146,7 +150,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ),
         ),
-        // Content
         _buildTextContent(
           title: title,
           description: description,
@@ -274,7 +277,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           : OutlinedButton(
               onPressed: onPressed,
               style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: AppColors.primaryYellow, width: 1.5),
+                side: const BorderSide(
+                    color: AppColors.primaryYellow, width: 1.5),
                 foregroundColor: AppColors.primaryYellow,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),

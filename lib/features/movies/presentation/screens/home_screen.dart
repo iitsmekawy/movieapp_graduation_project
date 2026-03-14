@@ -95,11 +95,9 @@ class _MovieHomeScreenState extends State<MovieHomeScreen> {
               ),
             ),
           ),
-
         Positioned.fill(
           child: Container(color: Colors.black.withValues(alpha: 0.4)),
         ),
-
         Positioned.fill(
           child: Container(
             decoration: const BoxDecoration(
@@ -117,7 +115,6 @@ class _MovieHomeScreenState extends State<MovieHomeScreen> {
             ),
           ),
         ),
-
         SingleChildScrollView(
           child: Column(
             children: [
@@ -127,9 +124,7 @@ class _MovieHomeScreenState extends State<MovieHomeScreen> {
                 height: 100,
                 fit: BoxFit.contain,
               ),
-
               const SizedBox(height: 10),
-
               if (_movies.isNotEmpty)
                 SizedBox(
                   height: 420,
@@ -148,24 +143,18 @@ class _MovieHomeScreenState extends State<MovieHomeScreen> {
                     },
                   ),
                 ),
-
               const SizedBox(height: 20),
-
               Image.asset(
                 'assets/images/Watch Now.png',
                 height: 110,
                 fit: BoxFit.contain,
               ),
-
               const SizedBox(height: 20),
-
               SectionHeader(
                 title: AppLocalizations.of(context)!.action,
                 onSeeMore: () => setState(() => _bottomNavIndex = 2),
               ),
-
               const SizedBox(height: 15),
-
               SizedBox(
                 height: 220,
                 child: ListView.builder(
@@ -176,7 +165,6 @@ class _MovieHomeScreenState extends State<MovieHomeScreen> {
                       MovieThumbnailCard(movie: _actionMovies[index]),
                 ),
               ),
-
               const SizedBox(height: 100),
             ],
           ),

@@ -21,7 +21,8 @@ class ApiService {
 
   Future<List<Movie>> fetchMoviesByCategory(String genre) async {
     try {
-      final response = await _dio.get(_baseUrl, queryParameters: {'genre': genre});
+      final response =
+          await _dio.get(_baseUrl, queryParameters: {'genre': genre});
       if (response.statusCode == 200) {
         final List moviesJson = response.data['data']['movies'];
         return moviesJson.map((json) => Movie.fromJson(json)).toList();

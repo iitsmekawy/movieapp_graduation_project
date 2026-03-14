@@ -71,14 +71,12 @@ class _SplashScreenState extends State<SplashScreen>
       final user = FirebaseAuth.instance.currentUser;
 
       if (user != null) {
-        // User is already logged in — load their Firestore data then go to home
         await UserService().loadFromFirestore();
         if (!mounted) return;
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const MovieHomeScreen()),
         );
       } else {
-        // Not logged in — show onboarding
         if (!mounted) return;
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const OnboardingScreen()),

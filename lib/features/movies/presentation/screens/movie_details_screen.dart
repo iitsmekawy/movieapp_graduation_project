@@ -60,14 +60,17 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     if (_isLoading) {
       return const Scaffold(
         backgroundColor: AppColors.background,
-        body: Center(child: CircularProgressIndicator(color: AppColors.primaryYellow)),
+        body: Center(
+            child: CircularProgressIndicator(color: AppColors.primaryYellow)),
       );
     }
 
     if (_movie == null) {
       return const Scaffold(
         backgroundColor: AppColors.background,
-        body: Center(child: Text("Movie not found", style: TextStyle(color: Colors.white))),
+        body: Center(
+            child:
+                Text("Movie not found", style: TextStyle(color: Colors.white))),
       );
     }
 
@@ -141,10 +144,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+                  icon:
+                      const Icon(Icons.arrow_back_ios_new, color: Colors.white),
                   onPressed: () => Navigator.pop(context),
                 ),
-
                 StreamBuilder<bool>(
                   stream: _interactionService.saveStream(widget.movieId),
                   builder: (context, snapshot) {
@@ -155,7 +158,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         child: Icon(
                           isSaved ? Icons.bookmark : Icons.bookmark_border,
                           key: ValueKey(isSaved),
-                          color: isSaved ? AppColors.primaryYellow : Colors.white,
+                          color:
+                              isSaved ? AppColors.primaryYellow : Colors.white,
                         ),
                       ),
                       onPressed: () async {
@@ -163,7 +167,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         await _interactionService.toggleSave(
                           movieId: widget.movieId,
                           movieName: _movie!.title,
-                          movieType: _movie!.genres.isNotEmpty ? _movie!.genres.first : 'Generic',
+                          movieType: _movie!.genres.isNotEmpty
+                              ? _movie!.genres.first
+                              : 'Generic',
                         );
                       },
                     );
@@ -184,7 +190,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 color: AppColors.primaryYellow,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.play_arrow_rounded, size: 50, color: Colors.white),
+              child: const Icon(Icons.play_arrow_rounded,
+                  size: 50, color: Colors.white),
             ),
           ),
         ),
@@ -223,11 +230,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.error,
           padding: const EdgeInsets.symmetric(vertical: 15),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
         child: Text(
           AppLocalizations.of(context)!.watch,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          style: const TextStyle(
+              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
     );
@@ -249,12 +258,15 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 await _interactionService.toggleLike(
                   movieId: widget.movieId,
                   movieName: _movie!.title,
-                  movieType: _movie!.genres.isNotEmpty ? _movie!.genres.first : 'Generic',
+                  movieType: _movie!.genres.isNotEmpty
+                      ? _movie!.genres.first
+                      : 'Generic',
                 );
               },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 250),
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                 decoration: BoxDecoration(
                   color: isLiked
                       ? AppColors.primaryYellow.withValues(alpha: 0.15)
@@ -292,8 +304,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
             );
           },
         ),
-
-        MovieStatItem(icon: Icons.access_time_filled, value: "${_movie!.runtime}m"),
+        MovieStatItem(
+            icon: Icons.access_time_filled, value: "${_movie!.runtime}m"),
         MovieStatItem(icon: Icons.star, value: _movie!.rating.toString()),
       ],
     );
@@ -304,7 +316,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
       padding: const EdgeInsets.only(bottom: 15),
       child: Text(
         title,
-        style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+        style: const TextStyle(
+            color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
       ),
     );
   }

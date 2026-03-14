@@ -15,7 +15,7 @@ class AvatarSelectionSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(15, 10, 15, 0), // Adjusted padding
+      padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
       decoration: const BoxDecoration(
         color: AppColors.darkGray,
         borderRadius: BorderRadius.only(
@@ -67,7 +67,7 @@ class AvatarSelectionSheet extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 30), // Bottom padding
+            const SizedBox(height: 30),
           ],
         ),
       ),

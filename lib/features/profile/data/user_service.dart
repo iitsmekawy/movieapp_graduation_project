@@ -10,7 +10,6 @@ class UserService extends ChangeNotifier {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Local cache
   String _name = '';
   String _phone = '';
   String _email = '';
@@ -26,7 +25,6 @@ class UserService extends ChangeNotifier {
 
   String? get _uid => FirebaseAuth.instance.currentUser?.uid;
 
-  /// Load user data from Firestore into local cache
   Future<void> loadFromFirestore() async {
     final uid = _uid;
     if (uid == null) return;
@@ -35,13 +33,15 @@ class UserService extends ChangeNotifier {
       final doc = await _firestore.collection('users').doc(uid).get();
       if (doc.exists) {
         final data = doc.data()!;
-        _name = data['name'] ?? FirebaseAuth.instance.currentUser?.displayName ?? '';
+        _name = data['name'] ??
+            FirebaseAuth.instance.currentUser?.displayName ??
+            '';
         _phone = data['phone'] ?? '';
-        _email = data['email'] ?? FirebaseAuth.instance.currentUser?.email ?? '';
+        _email =
+            data['email'] ?? FirebaseAuth.instance.currentUser?.email ?? '';
         _selectedAvatarIndex = data['avatarIndex'] ?? 1;
         notifyListeners();
       } else {
-        // First time — use displayName from Firebase Auth
         _name = FirebaseAuth.instance.currentUser?.displayName ?? '';
         _email = FirebaseAuth.instance.currentUser?.email ?? '';
         notifyListeners();
@@ -49,7 +49,6 @@ class UserService extends ChangeNotifier {
     } catch (_) {}
   }
 
-  /// Save new user doc to Firestore (called after registration)
   Future<void> saveToFirestore({
     required String name,
     required String phone,
@@ -74,7 +73,6 @@ class UserService extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Update existing user doc in Firestore (called from Edit Profile)
   Future<void> updateInFirestore({
     String? name,
     String? phone,
@@ -101,12 +99,9 @@ class UserService extends ChangeNotifier {
     if (phone != null) _phone = phone;
     if (email != null && email != _email) {
       try {
-        // Also attempt to update the actual login email in Firebase Auth
         await FirebaseAuth.instance.currentUser?.verifyBeforeUpdateEmail(email);
         _email = email;
       } catch (e) {
-        // If it fails (e.g. requires-recent-login), we still updated Firestore,
-        // but we should probably keep the local _email in sync with what's in Firestore
         _email = email;
         rethrow;
       }
@@ -115,7 +110,6 @@ class UserService extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Local-only update (for UI state, without Firestore)
   void updateProfile({String? name, String? phone, int? avatarIndex}) {
     if (name != null) _name = name;
     if (phone != null) _phone = phone;
@@ -123,7 +117,6 @@ class UserService extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Add a movie to history (moves to end if exists)
   Future<void> addToHistory({
     required int movieId,
     required String movieName,
@@ -133,8 +126,7 @@ class UserService extends ChangeNotifier {
     if (uid == null) return;
     try {
       final userRef = _firestore.collection('users').doc(uid);
-      
-      // We store a map of movie info in the history array
+
       final movieData = {
         'id': movieId,
         'title': movieName,
@@ -142,25 +134,19 @@ class UserService extends ChangeNotifier {
         'timestamp': DateTime.now().millisecondsSinceEpoch,
       };
 
-      // Remove any existing entry for this movie ID to avoid duplicates and update timestamp
       final doc = await userRef.get();
       final List<dynamic> history = doc.data()?['history_detailed'] ?? [];
       history.removeWhere((item) => item['id'] == movieId);
-      
-      // Add new entry
+
       history.add(movieData);
 
       await userRef.set({
         'history_detailed': history,
-        // Keep the old simple list for backward compatibility if needed
         'history': FieldValue.arrayUnion([movieId])
       }, SetOptions(merge: true));
-    } catch (e) {
-      // Ignored
-    }
+    } catch (e) {}
   }
 
-  /// Get movie history, newest first
   Future<List<int>> getHistory() async {
     final uid = _uid;
     if (uid == null) return [];
@@ -170,13 +156,10 @@ class UserService extends ChangeNotifier {
         final List<dynamic> historyDynamic = doc.data()?['history'] ?? [];
         return historyDynamic.cast<int>().reversed.toList();
       }
-    } catch (e) {
-      // Ignored
-    }
+    } catch (e) {}
     return [];
   }
 
-  /// Get movie watchlist, newest first
   Future<List<int>> getWatchlist() async {
     final uid = _uid;
     if (uid == null) return [];
@@ -186,9 +169,7 @@ class UserService extends ChangeNotifier {
         final List<dynamic> watchlistDynamic = doc.data()?['watchlist'] ?? [];
         return watchlistDynamic.cast<int>().reversed.toList();
       }
-    } catch (e) {
-      // Ignored
-    }
+    } catch (e) {}
     return [];
   }
 }

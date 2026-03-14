@@ -35,7 +35,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     try {
       await _authService.sendPasswordResetEmail(email);
       if (mounted) {
-        _showMessage('Password reset email sent! Check your inbox.', isError: false);
+        _showMessage('Password reset email sent! Check your inbox.',
+            isError: false);
         Future.delayed(const Duration(seconds: 2), () {
           if (mounted) Navigator.pop(context);
         });
@@ -96,7 +97,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 20),
-
             Container(
               height: 430,
               width: 430,
@@ -107,15 +107,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ),
               ),
             ),
-
             _buildInputField(
               controller: _emailController,
               label: 'Email Address',
               icon: Icons.email_outlined,
             ),
-
             const SizedBox(height: 30),
-
             SizedBox(
               width: double.infinity,
               height: 55,
@@ -146,7 +143,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       ),
               ),
             ),
-
             const SizedBox(height: 20),
           ],
         ),

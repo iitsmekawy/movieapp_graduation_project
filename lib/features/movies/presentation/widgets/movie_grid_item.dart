@@ -30,7 +30,8 @@ class MovieGridItem extends StatelessWidget {
               width: double.infinity,
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(color: Colors.grey[900]),
-              errorWidget: (context, url, error) => Container(color: Colors.grey[900]),
+              errorWidget: (context, url, error) =>
+                  Container(color: Colors.grey[900]),
             ),
             Positioned(
               top: 10,

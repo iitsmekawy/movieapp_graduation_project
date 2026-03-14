@@ -9,8 +9,7 @@ class Movie {
   final String backgroundImage;
   final String mediumCoverImage;
   final String largeCoverImage;
-  
-  // New fields for details
+
   final int runtime;
   final String descriptionFull;
   final int likeCount;
@@ -37,9 +36,12 @@ class Movie {
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     List<String> screenshots = [];
-    if (json['medium_screenshot_image1'] != null) screenshots.add(json['medium_screenshot_image1']);
-    if (json['medium_screenshot_image2'] != null) screenshots.add(json['medium_screenshot_image2']);
-    if (json['medium_screenshot_image3'] != null) screenshots.add(json['medium_screenshot_image3']);
+    if (json['medium_screenshot_image1'] != null)
+      screenshots.add(json['medium_screenshot_image1']);
+    if (json['medium_screenshot_image2'] != null)
+      screenshots.add(json['medium_screenshot_image2']);
+    if (json['medium_screenshot_image3'] != null)
+      screenshots.add(json['medium_screenshot_image3']);
 
     return Movie(
       id: json['id'] ?? 0,
@@ -55,7 +57,7 @@ class Movie {
       runtime: json['runtime'] ?? 0,
       descriptionFull: json['description_full'] ?? '',
       likeCount: json['like_count'] ?? 0,
-      cast: json['cast'] != null 
+      cast: json['cast'] != null
           ? (json['cast'] as List).map((c) => Cast.fromJson(c)).toList()
           : null,
       screenshots: screenshots.isNotEmpty ? screenshots : null,

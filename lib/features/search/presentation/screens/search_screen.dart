@@ -88,7 +88,8 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
 
   Widget _buildBody() {
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator(color: AppColors.primaryYellow));
+      return const Center(
+          child: CircularProgressIndicator(color: AppColors.primaryYellow));
     }
 
     if (!_hasSearched || _searchController.text.isEmpty) {
@@ -122,7 +123,10 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
             const SizedBox(height: 20),
             Text(
               AppLocalizations.of(context)!.noResults,
-              style: const TextStyle(color: Colors.white70, fontSize: 18, fontWeight: FontWeight.w500),
+              style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500),
             ),
           ],
         ),

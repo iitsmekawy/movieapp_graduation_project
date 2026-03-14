@@ -31,7 +31,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
   final AuthService _authService = AuthService();
@@ -74,17 +75,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
       await _authService.registerWithEmail(email, password);
       await _authService.updateDisplayName(name);
 
-      UserService().saveToFirestore(
-        name: name,
-        phone: _phoneController.text.trim(),
-        email: email,
-        avatarIndex: _currentPage,
-      ).catchError((_) {});
+      UserService()
+          .saveToFirestore(
+            name: name,
+            phone: _phoneController.text.trim(),
+            email: email,
+            avatarIndex: _currentPage,
+          )
+          .catchError((_) {});
 
       await _authService.signOut();
 
       if (!mounted) return;
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Account created successfully! Please login.'),
@@ -149,7 +152,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         title: Text(
           l10n.register,
-          style: const TextStyle(color: AppColors.primaryYellow, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              color: AppColors.primaryYellow, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -158,7 +162,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Column(
           children: [
             const SizedBox(height: 10),
-
             SizedBox(
               height: 160,
               child: PageView.builder(
@@ -209,16 +212,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
             ),
-
             const SizedBox(height: 10),
-            
             AuthTextField(
               controller: _nameController,
               hintText: l10n.name,
               prefixIcon: Icons.badge,
             ),
             const SizedBox(height: 15),
-
             AuthTextField(
               controller: _emailController,
               hintText: l10n.email,
@@ -226,7 +226,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 15),
-
             AuthTextField(
               controller: _passwordController,
               hintText: l10n.password,
@@ -245,7 +244,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
             const SizedBox(height: 15),
-
             AuthTextField(
               controller: _confirmPasswordController,
               hintText: l10n.confirmPassword,
@@ -253,7 +251,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               isObscured: _isConfirmPasswordObscured,
               suffixIcon: IconButton(
                 icon: Icon(
-                  _isConfirmPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                  _isConfirmPasswordObscured
+                      ? Icons.visibility_off
+                      : Icons.visibility,
                   color: Colors.white54,
                 ),
                 onPressed: () {
@@ -264,16 +264,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
             const SizedBox(height: 15),
-
             AuthTextField(
               controller: _phoneController,
               hintText: l10n.phoneNumber,
               prefixIcon: Icons.phone,
               keyboardType: TextInputType.phone,
             ),
-
             const SizedBox(height: 25),
-
             SizedBox(
               width: double.infinity,
               height: 55,
@@ -304,9 +301,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
               ),
             ),
-
             const SizedBox(height: 20),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -329,9 +324,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ],
             ),
-
             const SizedBox(height: 10),
-
             Center(
               child: SizedBox(
                 width: 100,
@@ -357,7 +350,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(22),
-                        border: Border.all(color: AppColors.primaryYellow, width: 2),
+                        border: Border.all(
+                            color: AppColors.primaryYellow, width: 2),
                       ),
                     ),
                     Directionality(

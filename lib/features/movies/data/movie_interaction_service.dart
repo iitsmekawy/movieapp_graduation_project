@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class MovieInteractionService {
-  static final MovieInteractionService _instance = MovieInteractionService._internal();
+  static final MovieInteractionService _instance =
+      MovieInteractionService._internal();
   factory MovieInteractionService() => _instance;
   MovieInteractionService._internal();
 
@@ -10,9 +11,6 @@ class MovieInteractionService {
 
   String? get _uid => FirebaseAuth.instance.currentUser?.uid;
 
-  // ─── Likes ────────────────────────────────────────────────
-
-  /// Toggle like for a movie — returns the new liked state
   Future<bool> toggleLike({
     required int movieId,
     required String movieName,
@@ -32,29 +30,34 @@ class MovieInteractionService {
 
         final userSnap = await transaction.get(userRef);
         final userData = userSnap.data() ?? {};
-        final List<dynamic> likedDetailed = List.from(userData['liked_movies_detailed'] ?? []);
+        final List<dynamic> likedDetailed =
+            List.from(userData['liked_movies_detailed'] ?? []);
 
         if (likes.containsKey(uid)) {
-          // Unlike
           likes.remove(uid);
           likedDetailed.removeWhere((item) => item['id'] == movieId);
-          
-          transaction.set(movieRef, {
-            'likes': likes,
-            'title': movieName,
-            'type': movieType,
-          }, SetOptions(merge: true));
 
-          transaction.set(userRef, {
-            'liked_movies': FieldValue.arrayRemove([movieId]),
-            'liked_movies_detailed': likedDetailed,
-          }, SetOptions(merge: true));
+          transaction.set(
+              movieRef,
+              {
+                'likes': likes,
+                'title': movieName,
+                'type': movieType,
+              },
+              SetOptions(merge: true));
+
+          transaction.set(
+              userRef,
+              {
+                'liked_movies': FieldValue.arrayRemove([movieId]),
+                'liked_movies_detailed': likedDetailed,
+              },
+              SetOptions(merge: true));
 
           return false;
         } else {
-          // Like
           likes[uid] = true;
-          
+
           final movieEntry = {
             'id': movieId,
             'title': movieName,
@@ -62,17 +65,19 @@ class MovieInteractionService {
             'likedAt': DateTime.now().millisecondsSinceEpoch,
           };
 
-          // Add to detailed list
           likedDetailed.add(movieEntry);
 
-          transaction.set(movieRef, {
-            'likes': likes,
-            'title': movieName,
-            'type': movieType,
-          }, SetOptions(merge: true));
+          transaction.set(
+              movieRef,
+              {
+                'likes': likes,
+                'title': movieName,
+                'type': movieType,
+              },
+              SetOptions(merge: true));
 
-          // Also add to watchlist since user wants loved movies in wishlist
-          final List<dynamic> watchlistDetailed = List.from(userData['watchlist_detailed'] ?? []);
+          final List<dynamic> watchlistDetailed =
+              List.from(userData['watchlist_detailed'] ?? []);
           if (!watchlistDetailed.any((item) => item['id'] == movieId)) {
             watchlistDetailed.add({
               'id': movieId,
@@ -82,12 +87,15 @@ class MovieInteractionService {
             });
           }
 
-          transaction.set(userRef, {
-            'liked_movies': FieldValue.arrayUnion([movieId]),
-            'liked_movies_detailed': likedDetailed,
-            'watchlist': FieldValue.arrayUnion([movieId]),
-            'watchlist_detailed': watchlistDetailed,
-          }, SetOptions(merge: true));
+          transaction.set(
+              userRef,
+              {
+                'liked_movies': FieldValue.arrayUnion([movieId]),
+                'liked_movies_detailed': likedDetailed,
+                'watchlist': FieldValue.arrayUnion([movieId]),
+                'watchlist_detailed': watchlistDetailed,
+              },
+              SetOptions(merge: true));
 
           return true;
         }
@@ -97,7 +105,6 @@ class MovieInteractionService {
     }
   }
 
-  /// Stream of like count + whether current user liked
   Stream<({int count, bool isLiked})> likesStream(int movieId) {
     final uid = _uid;
     return _firestore
@@ -107,13 +114,13 @@ class MovieInteractionService {
         .map((snap) {
       final data = snap.data() ?? {};
       final likes = Map<String, dynamic>.from(data['likes'] ?? {});
-      return (count: likes.length, isLiked: uid != null && likes.containsKey(uid));
+      return (
+        count: likes.length,
+        isLiked: uid != null && likes.containsKey(uid)
+      );
     });
   }
 
-  // ─── Saves (Bookmark) ─────────────────────────────────────
-
-  /// Toggle save for a movie — returns the new saved state
   Future<bool> toggleSave({
     required int movieId,
     required String movieName,
@@ -133,27 +140,32 @@ class MovieInteractionService {
 
         final userSnap = await transaction.get(userRef);
         final userData = userSnap.data() ?? {};
-        final List<dynamic> watchlistDetailed = List.from(userData['watchlist_detailed'] ?? []);
+        final List<dynamic> watchlistDetailed =
+            List.from(userData['watchlist_detailed'] ?? []);
 
         if (saves.containsKey(uid)) {
-          // Unsave
           saves.remove(uid);
           watchlistDetailed.removeWhere((item) => item['id'] == movieId);
 
-          transaction.set(movieRef, {
-            'saves': saves,
-            'title': movieName,
-            'type': movieType,
-          }, SetOptions(merge: true));
-          
-          transaction.set(userRef, {
-            'watchlist': FieldValue.arrayRemove([movieId]),
-            'watchlist_detailed': watchlistDetailed,
-          }, SetOptions(merge: true));
-          
+          transaction.set(
+              movieRef,
+              {
+                'saves': saves,
+                'title': movieName,
+                'type': movieType,
+              },
+              SetOptions(merge: true));
+
+          transaction.set(
+              userRef,
+              {
+                'watchlist': FieldValue.arrayRemove([movieId]),
+                'watchlist_detailed': watchlistDetailed,
+              },
+              SetOptions(merge: true));
+
           return false;
         } else {
-          // Save
           saves[uid] = true;
           watchlistDetailed.add({
             'id': movieId,
@@ -162,17 +174,23 @@ class MovieInteractionService {
             'savedAt': DateTime.now().millisecondsSinceEpoch,
           });
 
-          transaction.set(movieRef, {
-            'saves': saves,
-            'title': movieName,
-            'type': movieType,
-          }, SetOptions(merge: true));
+          transaction.set(
+              movieRef,
+              {
+                'saves': saves,
+                'title': movieName,
+                'type': movieType,
+              },
+              SetOptions(merge: true));
 
-          transaction.set(userRef, {
-            'watchlist': FieldValue.arrayUnion([movieId]),
-            'watchlist_detailed': watchlistDetailed,
-          }, SetOptions(merge: true));
-          
+          transaction.set(
+              userRef,
+              {
+                'watchlist': FieldValue.arrayUnion([movieId]),
+                'watchlist_detailed': watchlistDetailed,
+              },
+              SetOptions(merge: true));
+
           return true;
         }
       });
@@ -181,7 +199,6 @@ class MovieInteractionService {
     }
   }
 
-  /// Stream of whether current user saved this movie
   Stream<bool> saveStream(int movieId) {
     final uid = _uid;
     return _firestore

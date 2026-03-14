@@ -41,8 +41,10 @@ class MainMovieCard extends StatelessWidget {
                 height: double.infinity,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => Container(color: Colors.grey[900]),
-                errorWidget: (context, url, error) => Container(color: Colors.black),
+                placeholder: (context, url) =>
+                    Container(color: Colors.grey[900]),
+                errorWidget: (context, url, error) =>
+                    Container(color: Colors.black),
               ),
               Positioned(
                 top: 15,

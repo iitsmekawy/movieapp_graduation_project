@@ -70,7 +70,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
         title: Text(
           AppLocalizations.of(context)!.editProfile,
-          style: const TextStyle(color: AppColors.primaryYellow, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              color: AppColors.primaryYellow, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -102,7 +103,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       onTap: _showResetPasswordDialog,
                       child: Text(
                         AppLocalizations.of(context)!.resetPassword,
-                        style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),
@@ -136,7 +140,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           },
           child: CircleAvatar(
             radius: 70,
-            backgroundImage: AssetImage(AppAssets.avatars[_selectedAvatarIndex]),
+            backgroundImage:
+                AssetImage(AppAssets.avatars[_selectedAvatarIndex]),
           ),
         ),
         Positioned(
@@ -144,7 +149,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           right: 5,
           child: Container(
             padding: const EdgeInsets.all(5),
-            decoration: const BoxDecoration(color: AppColors.primaryYellow, shape: BoxShape.circle),
+            decoration: const BoxDecoration(
+                color: AppColors.primaryYellow, shape: BoxShape.circle),
             child: const Icon(Icons.edit, size: 20, color: Colors.black),
           ),
         ),
@@ -164,11 +170,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               onPressed: _isSaving ? null : _handleUpdateProfile,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryYellow,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
               ),
-              child: _isSaving 
-                ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2))
-                : Text(AppLocalizations.of(context)!.updateData, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18)),
+              child: _isSaving
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                          color: Colors.black, strokeWidth: 2))
+                  : Text(AppLocalizations.of(context)!.updateData,
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18)),
             ),
           ),
           const SizedBox(height: 15),
@@ -179,9 +194,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               onPressed: _handleDeleteAccount,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.error,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
               ),
-              child: Text(AppLocalizations.of(context)!.deleteAccount, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
+              child: Text(AppLocalizations.of(context)!.deleteAccount,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18)),
             ),
           ),
         ],
@@ -199,7 +219,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated successfully'), backgroundColor: Colors.green),
+          const SnackBar(
+              content: Text('Profile updated successfully'),
+              backgroundColor: Colors.green),
         );
         Navigator.of(context).pop();
       }
@@ -207,7 +229,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (!mounted) return;
       String message = 'Failed to update profile. Try again.';
       if (e is FirebaseAuthException && e.code == 'requires-recent-login') {
-        message = 'For security, please logout and login again to change your email.';
+        message =
+            'For security, please logout and login again to change your email.';
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message), backgroundColor: AppColors.error),
@@ -222,11 +245,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.darkGray,
-        title: const Text('Delete Account', style: TextStyle(color: AppColors.error)),
-        content: const Text('Are you sure you want to delete your account? This action is permanent.', style: TextStyle(color: Colors.white)),
+        title: const Text('Delete Account',
+            style: TextStyle(color: AppColors.error)),
+        content: const Text(
+            'Are you sure you want to delete your account? This action is permanent.',
+            style: TextStyle(color: Colors.white)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel', style: TextStyle(color: Colors.white70))),
-          TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Delete', style: TextStyle(color: AppColors.error))),
+          TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel',
+                  style: TextStyle(color: Colors.white70))),
+          TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Delete',
+                  style: TextStyle(color: AppColors.error))),
         ],
       ),
     );
@@ -235,10 +267,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       try {
         final uid = FirebaseAuth.instance.currentUser?.uid;
         if (uid != null) {
-          await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .delete();
         }
         await AuthService().deleteAccount();
-        
+
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const LoginScreen()),
@@ -251,7 +286,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           if (e is FirebaseAuthException && e.code == 'requires-recent-login') {
             message = 'Please login again before deleting your account.';
           }
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: AppColors.error));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(message), backgroundColor: AppColors.error));
         }
       }
     }
