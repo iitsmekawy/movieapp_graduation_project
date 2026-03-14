@@ -57,11 +57,12 @@ class _ProfileScreenState extends State<ProfileScreen>
     try {
       final historyIds = await _userService.getHistory();
       if (historyIds.isEmpty) {
-        if (mounted)
+        if (mounted) {
           setState(() {
             _historyMovies = [];
             _isLoadingHistory = false;
           });
+        }
         return;
       }
 
@@ -83,11 +84,12 @@ class _ProfileScreenState extends State<ProfileScreen>
     try {
       final watchlistIds = await _userService.getWatchlist();
       if (watchlistIds.isEmpty) {
-        if (mounted)
+        if (mounted) {
           setState(() {
             _watchlistMovies = [];
             _isLoadingWatchlist = false;
           });
+        }
         return;
       }
 

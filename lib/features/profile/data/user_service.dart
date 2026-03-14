@@ -46,7 +46,9 @@ class UserService extends ChangeNotifier {
         _email = FirebaseAuth.instance.currentUser?.email ?? '';
         notifyListeners();
       }
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('Error loading from Firestore: $e');
+    }
   }
 
   Future<void> saveToFirestore({
@@ -144,7 +146,9 @@ class UserService extends ChangeNotifier {
         'history_detailed': history,
         'history': FieldValue.arrayUnion([movieId])
       }, SetOptions(merge: true));
-    } catch (e) {}
+    } catch (e) {
+      debugPrint('Error adding to history: $e');
+    }
   }
 
   Future<List<int>> getHistory() async {
@@ -156,7 +160,9 @@ class UserService extends ChangeNotifier {
         final List<dynamic> historyDynamic = doc.data()?['history'] ?? [];
         return historyDynamic.cast<int>().reversed.toList();
       }
-    } catch (e) {}
+    } catch (e) {
+      debugPrint('Error getting history: $e');
+    }
     return [];
   }
 
@@ -169,7 +175,9 @@ class UserService extends ChangeNotifier {
         final List<dynamic> watchlistDynamic = doc.data()?['watchlist'] ?? [];
         return watchlistDynamic.cast<int>().reversed.toList();
       }
-    } catch (e) {}
+    } catch (e) {
+      debugPrint('Error getting watchlist: $e');
+    }
     return [];
   }
 }

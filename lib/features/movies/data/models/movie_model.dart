@@ -36,12 +36,15 @@ class Movie {
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     List<String> screenshots = [];
-    if (json['medium_screenshot_image1'] != null)
+    if (json['medium_screenshot_image1'] != null) {
       screenshots.add(json['medium_screenshot_image1']);
-    if (json['medium_screenshot_image2'] != null)
+    }
+    if (json['medium_screenshot_image2'] != null) {
       screenshots.add(json['medium_screenshot_image2']);
-    if (json['medium_screenshot_image3'] != null)
+    }
+    if (json['medium_screenshot_image3'] != null) {
       screenshots.add(json['medium_screenshot_image3']);
+    }
 
     return Movie(
       id: json['id'] ?? 0,

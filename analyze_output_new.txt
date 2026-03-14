@@ -1,0 +1,11 @@
+Analyzing movieapp_graduation_project...                        
+
+   info - Statements in an if should be enclosed in a block - lib\features\movies\data\models\movie_model.dart:40:7 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\movies\data\models\movie_model.dart:42:7 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\movies\data\models\movie_model.dart:44:7 - curly_braces_in_flow_control_structures
+   info - Empty catch block - lib\features\profile\data\user_service.dart:147:17 - empty_catches
+   info - Empty catch block - lib\features\profile\data\user_service.dart:159:17 - empty_catches
+   info - Empty catch block - lib\features\profile\data\user_service.dart:172:17 - empty_catches
+   info - Statements in an if should be enclosed in a block - lib\features\profile\presentation\screens\profile_screen.dart:61:11 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\features\profile\presentation\screens\profile_screen.dart:87:11 - curly_braces_in_flow_control_structures
+
